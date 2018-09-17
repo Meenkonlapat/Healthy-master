@@ -1,4 +1,4 @@
-package com.example.lab203_43.healthy;
+package com.example.lab203_43.healthy.Weight;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,13 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.lab203_43.healthy.Weight.Weight;
-import com.example.lab203_43.healthy.Weight.WeightAdapter;
+import com.example.lab203_43.healthy.R;
 
 import java.util.ArrayList;
 
@@ -22,12 +19,14 @@ import java.util.ArrayList;
 
 public class WeightFragment extends Fragment
 {
-
+    
     ArrayList<Weight> _weight = new ArrayList<>();
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@Nullable LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_weight, container, false);
     }
 

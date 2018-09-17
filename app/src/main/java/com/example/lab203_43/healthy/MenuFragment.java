@@ -12,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.lab203_43.healthy.Weight.WeightFragment;
+import com.example.lab203_43.healthy.Weight.WeightFromFragment;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 /**
@@ -19,13 +23,14 @@ import java.util.ArrayList;
  */
 
 public class MenuFragment extends Fragment{
-
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ArrayList<String> _menu = new ArrayList<>();
 
     public MenuFragment() {
         _menu.add("BMI");
         _menu.add("Weight");
         _menu.add("Setup");
+        _menu.add("Sign Out");
     }
     @Nullable
     @Override
@@ -57,6 +62,7 @@ public class MenuFragment extends Fragment{
                                 .replace(R.id.main_view, new BMIfragment())
                                 .addToBackStack(null)
                                 .commit();
+                        Log.d("USER", "GO TO BMI");
                         break;
                     case "Weight" :
                         getActivity().getSupportFragmentManager()
@@ -64,6 +70,7 @@ public class MenuFragment extends Fragment{
                                 .replace(R.id.main_view, new WeightFragment())
                                 .addToBackStack(null)
                                 .commit();
+                        Log.d("USER", "GO TO WEIGHT");
                         break;
                     case "Setup" :
                         getActivity().getSupportFragmentManager()
@@ -71,6 +78,15 @@ public class MenuFragment extends Fragment{
                                 .replace(R.id.main_view, new WeightFromFragment())
                                 .addToBackStack(null)
                                 .commit();
+                        Log.d("USER", "GO TO WEIGHT FROM");
+                        break;
+                    case "Sign Out" :
+                        mAuth.signOut();
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.main_view, new LoginFragment())
+                                .commit();
+                        Log.d("USER", "SIGN OUT");
                         break;
                     default: break;
                 }

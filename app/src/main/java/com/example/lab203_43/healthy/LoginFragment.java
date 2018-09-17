@@ -13,11 +13,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 /**
  * Created by LAB203_43 on 20/8/2561.
  */
 
 public class LoginFragment extends Fragment {
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     @Nullable
     @Override
     public View onCreateView(
@@ -33,7 +41,7 @@ public class LoginFragment extends Fragment {
 
         initLoginBtn();
         initRegisterBtn();
-
+        initCurrentUser();
     }
 
     // Action after click login button
@@ -42,10 +50,10 @@ public class LoginFragment extends Fragment {
         _loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText _userId = (EditText) getView().findViewById(R.id.login_user_id);
+                final EditText _userId = (EditText) getView().findViewById(R.id.login_user_id);
                 EditText _password = (EditText) getView().findViewById(R.id.login_password);
                 String _userIdStr = _userId.getText().toString();
-                String _passwordStr = _password.getText().toString();
+                final String _passwordStr = _password.getText().toString();
                 if (_userIdStr.isEmpty() || _passwordStr.isEmpty()) {
                     Toast.makeText(
                             getActivity(),
@@ -53,14 +61,30 @@ public class LoginFragment extends Fragment {
                             Toast.LENGTH_SHORT
                     ).show();
                     Log.d("USER", "USER OR PASSWORD IS EMPTY");
-                } else if (_userIdStr.equals("admin") && _passwordStr.equals("admin")) {
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.main_view, new MenuFragment())
-                            .addToBackStack(null)
-                            .commit();
-                    Log.d("USER", "GOTO BMI");
-                } else {
+                }  else {
+                    mAuth.signInWithEmailAndPassword(_userIdStr, _passwordStr).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            if(mAuth.getCurrentUser().isEmailVerified()) {
+                                getActivity()
+                                        .getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.main_view, new MenuFragment())
+                                        .commit();
+                            }
+                            else {
+                                Toast.makeText(getActivity(),"Email ของคุณยังไม่ได้รับการยืนยัน", Toast.LENGTH_SHORT).show();
+                                Log.d("USER", "EMAIL STILL NOT VERIFY");
+                            }
+                        }
+
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(),"User นี้ยังไม่มีในระบบ", Toast.LENGTH_SHORT).show();
+                            Log.d("USER", "THIS EMAIL HAS INVALID");
+                        }
+                    });
                     Log.d("USER", "INVALID USERNAME OR PASSWORD");
                 }
             }
@@ -81,5 +105,15 @@ public class LoginFragment extends Fragment {
             }
         });
         Log.d("USER", "GOTO REGISTER");
+    }
+    private void initCurrentUser() {
+        if(mAuth.getCurrentUser() != null )
+        {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_view, new MenuFragment()).commit();
+            Log.d("USER", "HAVE A USER CURRENT");
+        }
+        else
+        {
+        }
     }
 }

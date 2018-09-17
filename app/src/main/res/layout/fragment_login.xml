@@ -32,7 +32,8 @@
                 android:drawableLeft="@drawable/ic_action_name_password"
                 android:layout_gravity="center"
                 android:layout_width="285dp"
-                android:id="@+id/login_password" />
+                android:id="@+id/login_password"
+                android:inputType="textPassword"/>
 
             <Button
                 android:text="Login"

@@ -1,4 +1,4 @@
-package com.example.lab203_43.healthy;
+package com.example.lab203_43.healthy.Weight;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.lab203_43.healthy.R;
+import com.example.lab203_43.healthy.Weight.WeightFragment;
+
 /**
  * Created by LAB203_44 on 27/8/2561.
  */
 
 public class WeightFromFragment extends Fragment {
+    FirebaseFirestore mdb = FirebaseFirestore.getInstance();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,7 +49,7 @@ public class WeightFromFragment extends Fragment {
         });
     }
     private void initBackBtn(){
-        Button _backBtn = (Button) getView().findViewById(R.id.button_back);
+        Button _backBtn = (Button) getView().findViewById(R.id.weight_from_back_btn);
         _backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
